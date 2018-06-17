@@ -8,6 +8,7 @@
 #include <sys/shm.h>
 #include <stdexcept>
 #include <map>
+#include <thread>
 #include <signal.h>
 #include <cassert>
 #include "i_shm.h"
@@ -43,9 +44,11 @@ int main(int argc,char**argv)
 	}
     string iniFile = argv[1];
     cout << "inifile:" << iniFile << endl;
-    
+
     trafficManager *_TF;
     globalVar *gHandle = new globalVar(iniFile);
+    if(!gHandle)
+        throw runtime_error("Instantiating globalVar object failed.");
 	gHandle->printConfig();
     gHandle->setGlobalProcId(gProcId);
     cout << "Process Manager Id Is " << gProcId << endl;            // set manager process to statistics
@@ -208,15 +211,18 @@ bool gReceive(unsigned char *const gPtr, const size_t procNum)
 
 static void readStatProcMem(const int statsMsgQueueId)
 {
+    using namespace chrono_literals;
     uint_64 sendFlitsNum = 0, recvFlitsNum = 0, flitsLifeTimeSum = 0;
     double averageDelay;
     uint_64 tmp;
     int __tmp;
     cout << "To keep the time sequence.Wait for 2 seconds." << endl;
-    sleep(2);
+    this_thread::sleep_for(2s);
     while(1)
     {
         statsMsgBuffer *_ptr = new statsMsgBuffer;
+        if(!_ptr)
+            throw runtime_error("Instantiating statsMsgBuffer object failed in readStatProcMem() function.");
         __tmp = msgrcv(statsMsgQueueId, _ptr, sizeof(statsMsgBuffer), 0, O_NONBLOCK | MSG_NOERROR);
         if(__tmp == -1)
             break;

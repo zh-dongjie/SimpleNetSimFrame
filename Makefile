@@ -2,7 +2,7 @@ CC            = gcc
 CXX           = g++
 #DEFINES       = -DQT_QML_DEBUG
 CFLAGS        = -pipe -g -Wall -W -fPIC #$(DEFINES)
-CXXFLAGS      = -pipe -g -std=gnu++11  -W -fPIC #$(DEFINES)
+CXXFLAGS      = -pipe -g -W -fPIC #$(DEFINES)
 LINK          = g++
 LFLAGS        = -Wl,-O1
 

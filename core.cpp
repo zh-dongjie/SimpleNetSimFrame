@@ -126,7 +126,7 @@ void Core::send(Flit* f, int gateId)
         cout << "coreId:" << coreId << "send filt info:" << endl;
         cout << "simTime:" << getSimTime() << " pid:" << f->pid << " id:" << f->id << endl;
         cout << "srcId:" << f->srcId << " destId:" << f->destId << endl;
-#endif	
+#endif
 }
 
 void Core::sendDirect(Flit *f, string destModule, uint_64 destModuleId, string gateType, int gateId, uint_64 delay)
@@ -158,15 +158,18 @@ void Core::generateFlits()
     if(isGenFlits())
     {
         cout << "core " << coreId << " generating Flits..." << endl;
-        for(int i = 0; i < packetFlits; ++i)
+        for (int i = 0; i < packetFlits; ++i)
         {
-            Flit*f = new Flit;
-            if(i == 0)
+            Flit *f = new Flit;
+            if (!f)
+                throw runtime_error("Allocating memory failed in Core::generateFlits() function.");
+            if (i == 0)
             {
                 f->head = 1;
                 ++packetIdBase;
             }
-            if(i == packetFlits - 1) f->tail = 1;
+            if (i == packetFlits - 1)
+                f->tail = 1;
             f->srcId = coreId;
             f->destId = getDestId();
 
@@ -222,6 +225,8 @@ void Core::finish()
 
 #ifdef _PARALLEL_STATISTICS
     statsMsgBuffer *_ptr = new statsMsgBuffer;
+    if(!_ptr)
+    throw runtime_error("Allocating memory failed in Core::finish() function.");
     _ptr->type = 2;
     i_shm_write(_ptr->sendFlitsNum, sendFlitsNum);
     i_shm_write(_ptr->recvFlitsNum, recvFlitsNum);

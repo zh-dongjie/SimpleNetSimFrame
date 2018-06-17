@@ -17,6 +17,8 @@ void serialManager::initialize()
     int routerGateNum = gHandle->getRouterGateNum();
     int coreGateNum = gHandle->getCoreGateNum();
     routerSpool = new Router[routerNum];
+    if(!routerSpool)
+        throw runtime_error("Allocating memory for Router object failed.");
     for(uint_64 i = 0; i < routerNum; ++i)
     {
         routerSpool[i].gHandle = gHandle;
@@ -26,6 +28,8 @@ void serialManager::initialize()
 
     uint_64 coreNum = gHandle->getTotalCoreNum();
     coreSpool = new Core[coreNum];
+    if(!coreSpool)
+        throw runtime_error("Allocating memory for Core object failed.");
     for(uint_64 i = 0; i < coreNum; ++i)
     {
         coreSpool[i].gHandle = gHandle;
@@ -35,7 +39,11 @@ void serialManager::initialize()
     uint_64 channelNum = gHandle->getTotalChannelNum();
     cout << "channelNum:" << channelNum << endl;
     outputChannelSpool = new Channel[channelNum];
+    if(!outputChannelSpool)
+        throw runtime_error("Allocating memory for outputChannelSpool object.");
     inputChannelSpool = new Channel[channelNum];
+    if(!inputChannelSpool)
+        throw runtime_error("Allocating memory for inputChannelSpool object.");
 }
 
 
@@ -51,7 +59,7 @@ void serialManager::buildNetwork()
     uint_64 itmp;
     uint tmp;
 	ifstream ifs;
-    string network = gHandle->getNetwork(); 
+    string network = gHandle->getNetwork();
     string nedFile = "/home/mytest/qtProject/netSim/topology/" + network + ".ned";
     ifs.open(nedFile);
     uint_64 cnt = -1;

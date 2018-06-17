@@ -39,7 +39,7 @@ class shmManager:public trafficManager
         int gShmId;
         const char* gShmPath = "/tmp/gShm";
         unsigned char* gPtr;
-        size_t partitionId;
+        int partitionId;
         pid_t gProcId;
 
 		void packMessage(Flit* f);

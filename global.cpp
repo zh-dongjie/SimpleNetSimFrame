@@ -35,12 +35,15 @@ enum paramHash
     __totalChannelNum = 8563669837341159332UL,
     __simTimeLimit = 1093547823923524922UL
 };
+
 globalVar::globalVar(string &iniFile)
 {
 	if(singleFlag)
 	    throw runtime_error("class glovalVar should have only one instance.");
     loadParameter(iniFile);
     _rfPtr = new routingFunc(this);
+    if(!_rfPtr)
+        throw runtime_error("Allocating memory failed in globalVar::globalVar() function.");
     ++singleFlag;
 }
 
@@ -197,27 +200,27 @@ void globalVar::parsePartition(string& str, string& nodeStr, string& __partition
     uint_64 endNodeId = stoull(endStr);
     int partId = stoi(__partitionId);
     if(moduleType == "Router")
-    {
+          {
         for(uint_64 nodeId = startNodeId; nodeId < endNodeId + 1; ++nodeId)
-        {
+                  {
             routerPartition[nodeId] = partId;
             cout << "nodeId:" << nodeId << "--> partId:" << partId << endl;
             ++routersNumEachPartition[partId];
-        }
-    }
+                  }
+          }
     else if(moduleType == "Core")
-    {
+         {
         for(uint_64 nodeId = startNodeId; nodeId < endNodeId + 1; ++nodeId)
-        {
+                  {
             corePartition[nodeId] = partId;
             ++coresNumEachPartition[partId];
-        }
-    }
+                  }
+         }
     else
-    {
+        {
         cerr << " Unknown Module Type : " << moduleType << endl;
         throw runtime_error("");
-    }
+        }
 }
 
 bool globalVar::formatChk(string& target)
