@@ -19,12 +19,13 @@
 using namespace std;
 
 #define SVMSG_MODE 111000000
-static int gInitializeMemory(const size_t gLenthInByte, unsigned char *&, globalVar*const);
-static void gInitializeMQ(const char *const mqPath, globalVar *const gHanle);
-static void gSend(unsigned char *const, const size_t procNum);
-static bool gReceive(unsigned char *const, const size_t procNum);
-static void readStatProcMem(const int statsMsgQueueId);
-static void destroyMQ(globalVar * const gHanle);
+void gInitializeMemory(const size_t gLenthInByte, unsigned char *&, globalVar*const);
+void gInitializeMQ(const char *const mqPath, globalVar *const gHanle);
+void gSend(unsigned char *const, const size_t procNum);
+bool gReceive(unsigned char *const, const size_t procNum);
+void readStatProcMem(const int statsMsgQueueId);
+void destroyMQ(globalVar * const gHanle);
+void destroyShmMem(globalVar *const gHandle);
 //static void sig_child(const int signo);
 
 void usage()
@@ -47,8 +48,6 @@ int main(int argc,char**argv)
 
     trafficManager *_TF;
     globalVar *gHandle = new globalVar(iniFile);
-    if(!gHandle)
-        throw runtime_error("Instantiating globalVar object failed.");
 	gHandle->printConfig();
     gHandle->setGlobalProcId(gProcId);
     cout << "Process Manager Id Is " << gProcId << endl;            // set manager process to statistics
@@ -69,13 +68,12 @@ int main(int argc,char**argv)
     }
     else if(runType == "single-machine")
     {
-        pid_t gShmId;
         pid_t pid;
         //const char *const gShmPath = "/tmp/gShm";
         const char *const mqPath = "/tmp/msgQueue";
         //signal(SIGCHLD, sig_child);
         gInitializeMQ(mqPath, gHandle);
-        gShmId = gInitializeMemory(gLengthInByte, gPtr, gHandle);
+        gInitializeMemory(gLengthInByte, gPtr, gHandle);
         vector<pid_t> procIdStack;
         size_t procNum = gHandle->getProcNum();
         for(size_t order = 0; order < procNum; ++order)                    //procNum is number of child process.
@@ -125,6 +123,7 @@ int main(int argc,char**argv)
             int _statsMqId = gHandle->getStatsMqId();
             readStatProcMem(_statsMqId);
             destroyMQ(gHandle);
+            destroyShmMem(gHandle);
         }
     }
     else if(runType == "multi-machine")
@@ -136,7 +135,7 @@ int main(int argc,char**argv)
     return 0;
 }
 
-static int gInitializeMemory(size_t gLengthInByte, unsigned char *&gPtr, globalVar*const gHandle)
+void gInitializeMemory(size_t gLengthInByte, unsigned char *&gPtr, globalVar*const gHandle)
 {
     int shmId = shmget(IPC_PRIVATE, gLengthInByte, SVSHM_MODE | IPC_CREAT);
     if(shmId == -1)
@@ -149,7 +148,6 @@ static int gInitializeMemory(size_t gLengthInByte, unsigned char *&gPtr, globalV
     unsigned char* tmp = gPtr;
     for(size_t i = 0; i < gLengthInByte; ++i)
         *tmp++ = static_cast<unsigned char>(65);
-    return shmId;
 }
 
 void gInitializeMQ(const char *const mqPath, globalVar *const gHandle)
@@ -209,7 +207,7 @@ bool gReceive(unsigned char *const gPtr, const size_t procNum)
     return recvFlag;
 }
 
-static void readStatProcMem(const int statsMsgQueueId)
+void readStatProcMem(const int statsMsgQueueId)
 {
     using namespace chrono_literals;
     uint_64 sendFlitsNum = 0, recvFlitsNum = 0, flitsLifeTimeSum = 0;
@@ -221,8 +219,6 @@ static void readStatProcMem(const int statsMsgQueueId)
     while(1)
     {
         statsMsgBuffer *_ptr = new statsMsgBuffer;
-        if(!_ptr)
-            throw runtime_error("Instantiating statsMsgBuffer object failed in readStatProcMem() function.");
         __tmp = msgrcv(statsMsgQueueId, _ptr, sizeof(statsMsgBuffer), 0, O_NONBLOCK | MSG_NOERROR);
         if(__tmp == -1)
             break;
@@ -252,7 +248,7 @@ static void readStatProcMem(const int statsMsgQueueId)
     ofs.close();
 }
 
-static void destroyMQ( globalVar *const gHanle)
+void destroyMQ( globalVar *const gHanle)
 {
     int _mqid, tmp;
     int procN = gHanle->getProcNum();
@@ -269,4 +265,12 @@ static void destroyMQ( globalVar *const gHanle)
     if(tmp == -1)
         throw runtime_error("msgctl() failed in destroy() function.");
     cout << "destroyed statistics message queue " << _mqid << endl;
+}
+
+void destroyShmMem(globalVar *gHandle)
+{
+    int gShmId = gHandle->getgShmId();
+    int tmp = shmctl(gShmId, IPC_RMID, NULL);
+    if(tmp == -1)
+        throw("shmctl() function failed.");
 }

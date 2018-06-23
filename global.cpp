@@ -42,8 +42,6 @@ globalVar::globalVar(string &iniFile)
 	    throw runtime_error("class glovalVar should have only one instance.");
     loadParameter(iniFile);
     _rfPtr = new routingFunc(this);
-    if(!_rfPtr)
-        throw runtime_error("Allocating memory failed in globalVar::globalVar() function.");
     ++singleFlag;
 }
 

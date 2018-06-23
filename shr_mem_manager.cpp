@@ -30,14 +30,10 @@ void shmManager::initialize()
 
     uint_64 routerNumInProc = gHandle->getRoutersNumInPartion(partitionId);
     routerSpool = new Router[routerNumInProc];
-    if(!routerSpool)
-        throw runtime_error("Allocating memory for router object failed.");
 
     cout << "routerNumInProc" << routerNumInProc << endl;
     uint_64 coreNumInProc = gHandle->getCoresNumInPartition(partitionId);
     coreSpool = new Core[coreNumInProc];
-    if(!coreSpool)
-        throw runtime_error("Allocating memory for Core object failed.");
 
     cout << "coreNumInProc" << coreNumInProc << endl;
     int routerGateNum = gHandle->getRouterGateNum();
@@ -58,16 +54,11 @@ void shmManager::initialize()
 
     uint_64 channelNum = gHandle->getTotalChannelNum();
     outputChannelSpool = new Channel[channelNum];
-    if(!outputChannelSpool)
-        throw runtime_error("Allocating memory for outputChannelSpool object failed.");
 
     inputChannelSpool = new Channel[channelNum];
-    if(!inputChannelSpool)
-        throw runtime_error("Allocating memory for inputChannelSpool object failed.");
 
     cout << __FUNCTION__ << endl;
     gShmId = gHandle->getgShmId();
-    cout << "hello fuck!!!" << endl;
     gPtr = (unsigned char*)( shmat(gShmId, NULL, 0) );
     if(gPtr == nullptr)
         throw runtime_error("shmat() failed.");
@@ -82,8 +73,6 @@ void shmManager::sendMsgToOtherProc(Flit* f)
     //int nodePart = gHandle->getRouterPartitionId(f->nextRouterId);
     int _mqid = gHandle->getMqId(1);
     msgBuffer *ptr = new msgBuffer;
-    if(!ptr)
-        throw runtime_error("Allocating memory for msgBuffer object failed in shmManager::sendMsgToOtherProc().");
 
     ptr->type = 1;
     i_shm_write(ptr->head, f->head);
@@ -111,14 +100,9 @@ void shmManager::recvMsgFromOtherProc()
     while(1)
     {
         Flit *f = new Flit;
-        if(!f)
-            throw runtime_error("Allocating memory for Flit object failed in shmManager::recvMsgFromOtherProc().");
 
         int _mqid = gHandle->getMqId(partitionId);
         msgBuffer *ptr = new msgBuffer;
-        if(!ptr)
-            throw runtime_error("Allocating memory for msgBuffer object failed in shmManager::recvMsgFromOtherProc.");
-
         int tmp = msgrcv(_mqid, ptr, sizeof(msgBuffer), 0, O_NONBLOCK | MSG_NOERROR);
         if(tmp == -1)
             break;

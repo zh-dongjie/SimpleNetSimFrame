@@ -161,8 +161,6 @@ void Core::generateFlits()
         for (int i = 0; i < packetFlits; ++i)
         {
             Flit *f = new Flit;
-            if (!f)
-                throw runtime_error("Allocating memory failed in Core::generateFlits() function.");
             if (i == 0)
             {
                 f->head = 1;
@@ -225,8 +223,6 @@ void Core::finish()
 
 #ifdef _PARALLEL_STATISTICS
     statsMsgBuffer *_ptr = new statsMsgBuffer;
-    if(!_ptr)
-    throw runtime_error("Allocating memory failed in Core::finish() function.");
     _ptr->type = 2;
     i_shm_write(_ptr->sendFlitsNum, sendFlitsNum);
     i_shm_write(_ptr->recvFlitsNum, recvFlitsNum);

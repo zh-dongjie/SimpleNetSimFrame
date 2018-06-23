@@ -20,8 +20,6 @@ trafficManager* trafficManager::getConcretManager(string& _ts, globalVar* g)
             _tf = new shmManager(g);
 		else
 			throw runtime_error("please select right trafficManager style.");
-		if(!_tf)
-		    throw runtime_error("Instantiating manager object failed in trafficManager::getConcretManager().");
 		return _tf;
 	}
 	else
