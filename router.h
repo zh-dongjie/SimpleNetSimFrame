@@ -23,12 +23,12 @@ class Router : public base_object
         Router(){}
 
         virtual void initialize() override;
-        virtual void handleMessage(Flit* f) override;
+        virtual void handleMessage(Flit* &f) override;
 		virtual void finish() override;
 		uint_64 getRouterId();
         int getGatesNum(){return gatesNum;}
 		void putFlitIntoStack(Flit* f);
-        Flit* popFlitFromStack();		
+        Flit* popFlitFromStack();
         void generateFlits(vector<Flit*>& srcFlit);
 
         void send(Flit* f, int gateId);
@@ -48,13 +48,13 @@ class Router : public base_object
         virtual void evaluate() override;
         void killFlit(Flit*);
 
-		
+
         int gatesNum = 0;
         bool dam = _OPEN;
         uint_64 routerId = 0;
         uint_64 totalRouters = 0;
 		int packetFlits = 1;
-        
+
 
         routingFunc* _rfPtr;
         string _rfName;

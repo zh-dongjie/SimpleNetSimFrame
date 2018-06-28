@@ -32,9 +32,9 @@ bool trafficManager::nedCheck(string &target)
 {
     return 1;
     smatch sm;
-    size_t tmp = target.find(";");
-    target = target.substr(0, tmp);
-    string str = "(Core|Router)\\[\\d+\\]\\.Channel\\[\\d+\\] +--> +(Core|Router)\\[\\d+\\]\\.Channel\\[\\d+\\] *; *+";
+    //size_t tmp = target.find(";");
+    //target = target.substr(0, tmp);
+    string str = "(([ ]*(Core|Router)\\[\\d+\\]\\.Channel\\[\\d+\\] +<--> +(Core|Router)\\[\\d+\\]\\.Channel\\[\\d+\\][ ]*;[ ]*)|(^[ ]*))$";
     regex reNed(str);
     return regex_match(target, sm, reNed);
 }

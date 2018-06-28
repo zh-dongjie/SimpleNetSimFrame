@@ -55,7 +55,7 @@ int routingFunc::flood(Flit* f, Router* _router)
 
 int routingFunc::shortest_path(Flit* f, Router* node)
 {
-
+    return -1;
 }
 
 int routingFunc::routing_table(Flit* f, Router* node)

@@ -17,7 +17,6 @@
 #include "flit.h"
 #include "shr_mem_manager.h"
 
-#define _PRINT_DATA_INFO_
 using namespace std;
 
 void shmManager::initialize()
@@ -66,7 +65,7 @@ void shmManager::initialize()
 
 void shmManager::sendMsgToOtherProc(Flit* f)
 {
-#ifdef _PRINT_DATA_INFO_
+#ifdef _PRINT_DATA_STREAM
     cout << "Pack Message..." << endl;
     cout << "message srcId:" << f->srcId << "  message destId:" << f->destId << endl;
 #endif
@@ -122,7 +121,9 @@ void shmManager::recvMsgFromOtherProc()
         i_shm_read(ptr->nextRouterId, f->nextRouterId);
         i_shm_read(ptr->actSimTime, f->actSimTime);
         i_shm_read(ptr->currentChannelId, f->currentChannelId);
+#ifdef _PRINT_DATA_STREAM
         cout << "curChannelIID" << f->currentChannelId << endl;
+#endif
         uint_64 curChannelId = f->currentChannelId;
         Channel * _cPtr = allChannelPtr[curChannelId];
         if(partitionId == 2)
@@ -130,8 +131,10 @@ void shmManager::recvMsgFromOtherProc()
         _cPtr->pushFlitIntoStack(f);
         //Router *nextRouterPtr = allRouterPtr[f->nextRouterId];
         //nextRouterPtr->cxtInputChannel[]
+#ifdef _PRINT_DATA_STREAM
         cout << "Unpack Message..." << endl;
         cout << "message srcId:" << f->srcId << "  message destId:" << f->destId << endl;
+#endif
     }
 }
 
@@ -356,9 +359,11 @@ void shmManager::run()
             inputChannelSpool[i].evaluate();
         }
         if(curTime%10 == 0)
-            cout << "The Task Schedule : " << static_cast<double>(curTime)/uTimeLimit << "%......" << endl;
+            cout << "The Task Schedule : " << static_cast<double>(curTime)/uTimeLimit*100 << "%......" << endl;
         curTime += 2;
+#ifdef _PRINT_DATA_STREAM
         cout << "pattitionId:" << partitionId << endl;
+#endif
         *(gPtr + partitionId) = static_cast<unsigned char>(66);        //write "66" to shared memory
         while(static_cast<unsigned int>( *(gPtr + partitionId) ) != 67){} //wait info from manager process to continue next cycle
     }

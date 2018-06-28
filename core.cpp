@@ -42,7 +42,9 @@ void Core::initialize()
     networkTotalCores = gHandle->getTotalCoreNum();
     _rf = gHandle->getRfPtr();
     _rfName = gHandle->getRoutingFunc();
+#ifdef _PRINT_DATA_STREAM
     cout << "core" << coreId << " initialized." << endl;
+#endif
 }
 
 void Core::readInput()
@@ -69,7 +71,9 @@ void Core::readInput()
 
 void Core::evaluate()
 {
+#ifdef _PRINT_DATA_STREAM
     cout << "core " << coreId << " evaluating..." << endl;
+#endif
     for(auto sinkMsg:sinkFlits)
         handleMessage(sinkMsg);
     generateFlits();
@@ -91,8 +95,9 @@ void Core::evaluate()
     }
 }
 
-void Core::handleMessage(Flit* f)
+void Core::handleMessage(Flit* &f)
 {
+    //assert(f->srcId == 20);
 #ifdef _SHORTEST_PATH_FUNC_
     assert(f->destId == coreId);
     if(f->destId != coreId)
@@ -154,10 +159,14 @@ void Core::sendDirect(Flit *f, string destModule, uint_64 destModuleId, string g
 
 void Core::generateFlits()
 {
+#ifdef _PRINT_DATA_STREAM
     cout << "isGenFlits(): " << isGenFlits() << endl;
+#endif
     if(isGenFlits())
     {
+#ifdef _PRINT_DATA_STREAM
         cout << "core " << coreId << " generating Flits..." << endl;
+#endif
         for (int i = 0; i < packetFlits; ++i)
         {
             Flit *f = new Flit;
@@ -202,23 +211,26 @@ void Core::finish()
 {
     cout << "core[" << coreId << "] is excecuting finish()..." << endl;
 #ifdef _SERIAL_STATISTICS
-    using _sclk = chrono::system_clock;
-    ofstream ofs;
-    _sclk::time_point now_t = _sclk::now();
-    auto _t = now_t.time_since_epoch().count();
-    string str = to_string(_t);
-    string randomStr = str.substr(str.size() - 15, str.size() - 1);
-    const string resultFile = "serial_" + randomStr + ".log";
+    if(coreId == 0)
+    {
+        using _sclk = chrono::system_clock;
+        ofstream ofs;
+        _sclk::time_point now_t = _sclk::now();
+        auto _t = now_t.time_since_epoch().count();
+        string str = to_string(_t);
+        string randomStr = str.substr(str.size() - 15, str.size() - 1);
+        const string resultFile = "serial_" + randomStr + ".log";
 
-    ofs.open(resultFile, ios::app);
+        ofs.open(resultFile, ios::app);
 
-    ofs << "sendFlitsNum:  " << sendFlitsNum << endl;
-    ofs << "recvFlitsNum:  " << recvFlitsNum << endl;
-    double lifeTime = static_cast<double>(flitsLifeTimeSum);
-    double averageDelay;
-    averageDelay = lifeTime / recvFlitsNum;
-    ofs << "averageDelay:  " << averageDelay << endl;
-    ofs.close();
+        ofs << "sendFlitsNum:  " << sendFlitsNum << endl;
+        ofs << "recvFlitsNum:  " << recvFlitsNum << endl;
+        double lifeTime = static_cast<double>(flitsLifeTimeSum);
+        double averageDelay;
+        averageDelay = lifeTime / recvFlitsNum;
+        ofs << "averageDelay:  " << averageDelay << endl;
+        ofs.close();
+    }
 #endif
 
 #ifdef _PARALLEL_STATISTICS

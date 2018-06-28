@@ -4,10 +4,11 @@
 #include <vector>
 #include <map>
 #include <limits>
+#include <unordered_map>
 using namespace std;
-#define _PRINT_DATA_STREAM
-#define _SERIAL_STATISTICS
-//#define _PARALLEL_STATISTICS
+//#define _PRINT_DATA_STREAM
+//#define _SERIAL_STATISTICS
+#define _PARALLEL_STATISTICS
 typedef unsigned long long int uint_64;
 #define SVSHM_MODE 0600
 
@@ -23,10 +24,10 @@ class globalVar
         globalVar(string& iniFile);
 	    globalVar(globalVar const &) = delete;
 		void operator = (globalVar const&) = delete;
-	    
+
 		void loadParameter(string& iniFile);
         void printConfig();
-        
+
         uint_64 getTotalChannelNum(){return totalChannelNum;}
 		string getNetwork(){return network;}
 		string getRunType(){return runType;}
@@ -75,6 +76,7 @@ class globalVar
  		~globalVar(){}
     private:
         bool formatChk(string& target);
+        void initHash();
         void parsePartition(string& str,string& nodeStr, string& partId);
         vector<uint_64> routingTable;
         string network = "loop_net";
@@ -117,5 +119,6 @@ class globalVar
         vector<pid_t> childProcId; //按顺序存放进程Id（不包括用于统计的进程）
         unsigned char* gMemPtr = nullptr;
         int gShmId = -1;
+        unordered_map<string, int> configHash;
 };
 #endif

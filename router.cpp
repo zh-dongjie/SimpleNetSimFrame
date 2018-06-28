@@ -51,7 +51,7 @@ void Router::evaluate()
     }
 }
 
-void Router::handleMessage(Flit*f)
+void Router::handleMessage(Flit*&f)
 {
     int outGateId ;
 	if(f->head)
@@ -101,7 +101,7 @@ void Router::sendDirect(Flit* f, uint_64 _routerId)
 
 void Router::putFlitIntoStack(Flit* f)
 {
-    sourceFlits.push_back(f);   
+    sourceFlits.push_back(f);
 }
 
 Flit* Router::popFlitFromStack()

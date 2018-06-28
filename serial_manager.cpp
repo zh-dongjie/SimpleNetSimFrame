@@ -218,7 +218,7 @@ void serialManager::run()
             inputChannelSpool[i].evaluate();
         }
         if(curTime%10 == 0)
-            cout << "The Task Schedule : " << static_cast<double>(curTime)/uTimeLimit << "%......" << endl;
+            cout << "The Task Schedule : " << static_cast<double>(curTime)/uTimeLimit*100 << "%......" << endl;
         curTime += 2;
     }
 }

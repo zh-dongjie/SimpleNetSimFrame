@@ -21,19 +21,21 @@ uint_64 globalVar::packetId = 0;
 uint_64 globalVar::flitId = 0;
 enum paramHash
 {
-    __runType = 5045028521718112676UL,
-    __channelDelay = 9172537090517324817UL,
-    __channelType = 4315693204088466895UL,
-    __clockCycle = 5300761604345608817UL,
-    __routingFunc = 16365563138562764850UL,
-    __totalCoreNum = 11880624436780862395UL,
-    __totalRouterNum = 11066386352999594203UL,
-    __routerGateNum = 3019785267401912625UL,
-    __coreGateNum = 18216319699104575549UL,
-    __readNedStyle = 7724702862302528637UL,
-    __packetFlits = 6938426755752821536UL,
-    __totalChannelNum = 8563669837341159332UL,
-    __simTimeLimit = 1093547823923524922UL
+    __RUNTYPE = 1,
+    __CHANNELDELAY,
+    __CHANNELTYPE,
+    __CLOCKCYCLE,
+    __ROUTINGFUNC,
+    __TOTALCORENUM,
+    __TOTALROUTERNUM,
+    __ROUTERGATENUM,
+    __COREGATENUM,
+    __READNEDSTYLE,
+    __PACKETFLITS,
+    __TOTALCHANNELNUM,
+    __SIMTIMELIMIT,
+    __PARTITIONNUM,
+    __PROCNUM
 };
 
 globalVar::globalVar(string &iniFile)
@@ -48,8 +50,10 @@ globalVar::globalVar(string &iniFile)
 void globalVar::loadParameter(string &iniFile)
 {
     cout << "loadParameter..." << endl;
+
+    initHash();
+
     int left = 0,right = 0,line = 0,flag = 0;
-    //string fileName = "config.ini";
     string str,tmpStr,_tmpStr;
 	ifstream ifs;
 	ifs.open(iniFile);
@@ -76,7 +80,7 @@ void globalVar::loadParameter(string &iniFile)
         right = str.find_first_of(';') - 1;
         _tmpStr = str.substr(left, right - left + 1);
 
-        if(tmpStr == "runType")
+        /*if(tmpStr == "runType")
             runType = _tmpStr;
         else if(tmpStr == "channelDelay")
             channelDelay = _tmpStr;
@@ -120,8 +124,74 @@ void globalVar::loadParameter(string &iniFile)
         {
             cerr << " Unknown Parameter : " << tmpStr << endl;
             throw runtime_error("");
+        }*/
+        switch(configHash[tmpStr])
+        {
+        case __RUNTYPE:
+            runType = _tmpStr; break;
+        case __CHANNELDELAY:
+            channelDelay = _tmpStr; break;
+        case __CHANNELTYPE:
+            channelType = _tmpStr;break;
+        case __CLOCKCYCLE:
+            clockCycle = _tmpStr; break;
+        case __ROUTINGFUNC:
+            _rfName = _tmpStr; break;
+        case __TOTALCORENUM:
+            totalCoreNum = stoull(_tmpStr); break;
+        case __TOTALROUTERNUM:
+            totalRouterNum = stoull(_tmpStr); break;
+        case __ROUTERGATENUM:
+            routerGateNum = stoi(_tmpStr); break;
+        case __COREGATENUM:
+            coreGateNum = stoi(_tmpStr); break;
+        case __READNEDSTYLE:
+            readNedStyle = _tmpStr;break;
+        case __PACKETFLITS:
+            packetFlits = stoi(_tmpStr); break;
+        case __TOTALCHANNELNUM:
+            totalChannelNum = stoull(_tmpStr); break;
+        case __SIMTIMELIMIT:
+            setSimTimeLimit(_tmpStr); break;
+        case __PARTITIONNUM:
+            partitionNum = stoul(_tmpStr);
+            coresNumEachPartition.resize(partitionNum);
+            routersNumEachPartition.resize(partitionNum);
+            break;
+        case __PROCNUM:
+            procNum = stoi(_tmpStr);
+            break;
+        default:
+            if(tmpStr.find("partition-id") != string::npos)
+                parsePartition(str, tmpStr, _tmpStr);
+            else
+            {
+                cerr << " Unknown Parameter : " << tmpStr << endl;
+                throw runtime_error("");
+            }
         }
     }
+}
+
+void globalVar::initHash()
+{
+    int x = 1;
+    configHash["runType"] = x++;
+    configHash["channelDelay"] = x++;
+    configHash["channelType"] = x++;
+    configHash["clockCycle"] = x++;
+    configHash["routingFunc"] = x++;
+    configHash["totalCoreNum"] = x++;
+    configHash["totalRouterNum"] = x++;
+
+    configHash["routerGateNum"] = x++;
+    configHash["coreGateNum"] = x++;
+    configHash["readNedStyle"] = x++;
+    configHash["packetFlits"] = x++;
+    configHash["totalChannelNum"] = x++;
+    configHash["sim-time-limit"] = x++;
+    configHash["partitionNum"] = x++;
+    configHash["procNum"] = x++;
 }
 
 void globalVar::printConfig()
@@ -198,27 +268,27 @@ void globalVar::parsePartition(string& str, string& nodeStr, string& __partition
     uint_64 endNodeId = stoull(endStr);
     int partId = stoi(__partitionId);
     if(moduleType == "Router")
-          {
+    {
         for(uint_64 nodeId = startNodeId; nodeId < endNodeId + 1; ++nodeId)
-                  {
+        {
             routerPartition[nodeId] = partId;
             cout << "nodeId:" << nodeId << "--> partId:" << partId << endl;
             ++routersNumEachPartition[partId];
-                  }
-          }
+        }
+    }
     else if(moduleType == "Core")
-         {
+    {
         for(uint_64 nodeId = startNodeId; nodeId < endNodeId + 1; ++nodeId)
-                  {
+        {
             corePartition[nodeId] = partId;
             ++coresNumEachPartition[partId];
-                  }
-         }
+        }
+    }
     else
-        {
+    {
         cerr << " Unknown Module Type : " << moduleType << endl;
         throw runtime_error("");
-        }
+    }
 }
 
 bool globalVar::formatChk(string& target)

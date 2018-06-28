@@ -194,8 +194,10 @@ bool gReceive(unsigned char *const gPtr, const size_t procNum)
                 ++recvFlag;
             }
         }
+#ifdef _PRINT_DATA_STREAM
         cout << "recvFlag:" << recvFlag << endl;
         cout << "process Num:" << procNum << endl;
+#endif
         if(recvFlag == procNum)
         {
             recvFlag = 0;

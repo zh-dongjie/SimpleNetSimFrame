@@ -22,7 +22,7 @@ class Core :public base_object
         virtual void initialize() override;
         virtual void readInput() override;
         virtual void evaluate() override;
-		virtual void handleMessage(Flit* f) override;
+		virtual void handleMessage(Flit* &f) override;
 		virtual void finish() override;
 
         void send(Flit* f,int gateId);
@@ -35,7 +35,7 @@ class Core :public base_object
         friend class serialManager;
         friend class shmManager;
         //friend class sckManager;
-	
+
         virtual ~Core();
 	private:
 	    uint_64 coreId = 0;

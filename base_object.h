@@ -12,7 +12,7 @@ class base_object:public timeModule
     public:
         base_object(){}
         virtual void initialize(){}
-        virtual void handleMessage(Flit*f){}
+        virtual void handleMessage(Flit*&f){}
         virtual void finish(){}
 
         virtual void readInput(){}
