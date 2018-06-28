@@ -62,37 +62,7 @@ void serialManager::buildNetwork()
         if( nedCheck(str) && nedReady)
         {
             cout << "chkNed() success." << endl;
- /*           leftEnd = str.find_first_of("[");
-            rightEnd = str.find_first_of("]");
-            tmpStr = str.substr(leftEnd + 1, rightEnd - leftEnd - 1);
-            startId = stoull(tmpStr);
 
-            leftEnd = rightEnd + 10;
-            rightEnd = str.find("<");
-            tmpStr = str.substr(leftEnd, rightEnd - leftEnd - 13);
-            startGate = stoi(tmpStr);
-
-            startStr = str.substr(0, leftEnd - 12);
-
-            leftEnd = str.find_last_of("[");
-            rightEnd = str.find_last_of("]");
-            tmpStr = str.substr(leftEnd + 1, rightEnd - leftEnd - 1);
-            endGate = stoi(tmpStr);
-
-            rightEnd = leftEnd - 9;
-            itmp = 1;
-            while( str[rightEnd - itmp] != '[' )//Node[0] <--> Node[2]
-            {
-                ++itmp;
-            }
-
-            tmpStr = str.substr(rightEnd - itmp + 1, itmp);
-            endId = stoull(tmpStr);
-
-            rightEnd = leftEnd - 12;
-            leftEnd = str.find(">") + 2;
-            endStr = str.substr(leftEnd, rightEnd - leftEnd + 1);
-*/
             leftEnd = str.find_first_of("[");
             tmp = leftEnd;
             rightEnd = str.find_first_of("]");
@@ -241,4 +211,3 @@ serialManager::~serialManager()
     delete [] outputChannelSpool;
     delete [] inputChannelSpool;
 }
-

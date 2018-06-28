@@ -80,51 +80,6 @@ void globalVar::loadParameter(string &iniFile)
         right = str.find_first_of(';') - 1;
         _tmpStr = str.substr(left, right - left + 1);
 
-        /*if(tmpStr == "runType")
-            runType = _tmpStr;
-        else if(tmpStr == "channelDelay")
-            channelDelay = _tmpStr;
-        else if(tmpStr == "channelType")
-            channelType = _tmpStr;
-        else if(tmpStr == "clockCycle")
-            clockCycle = _tmpStr;
-        else if(tmpStr == "routingFunc")
-            _rfName = _tmpStr;
-        else if(tmpStr == "totalCoreNum")
-            totalCoreNum = stoull(_tmpStr);
-        else if(tmpStr == "totalRouterNum")
-            totalRouterNum = stoull(_tmpStr);
-        else if(tmpStr == "totalChannelNum")
-            totalChannelNum = stoull(_tmpStr);
-        else if(tmpStr == "sim-time-limit")
-            setSimTimeLimit(_tmpStr);
-        else if(tmpStr == "packetFlits")
-            packetFlits = stoi(_tmpStr);
-        else if(tmpStr == "procNum")
-            procNum = stoi(_tmpStr);
-        else if(tmpStr == "totalRouterNum")
-            totalRouterNum = stoull(_tmpStr);
-        else if(tmpStr == "totalCoreNum")
-            totalCoreNum = stoull(_tmpStr);
-        else if(tmpStr == "routerGateNum")
-            routerGateNum = stoi(_tmpStr);
-        else if(tmpStr == "coreGateNum")
-            coreGateNum = stoi(_tmpStr);
-        else if(tmpStr == "readNedStyle")
-            readNedStyle = _tmpStr;
-        else if(tmpStr == "partitionNum")
-        {
-            partitionNum = stoul(_tmpStr);
-            coresNumEachPartition.resize(partitionNum);
-            routersNumEachPartition.resize(partitionNum);
-        }
-        else if(tmpStr.find("partition-id") != string::npos)
-            parsePartition(str, tmpStr, _tmpStr);
-        else
-        {
-            cerr << " Unknown Parameter : " << tmpStr << endl;
-            throw runtime_error("");
-        }*/
         switch(configHash[tmpStr])
         {
         case __RUNTYPE:
