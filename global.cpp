@@ -54,7 +54,7 @@ void globalVar::loadParameter(string &iniFile)
     initHash();
 
     int left = 0,right = 0,line = 0,flag = 0;
-    string str,tmpStr,_tmpStr;
+    string str,paraStr,valueStr;
 	ifstream ifs;
 	ifs.open(iniFile);
     while(getline(ifs, str))
@@ -74,54 +74,54 @@ void globalVar::loadParameter(string &iniFile)
         size_t tmp = str.find_first_of('=');
         left = 0;
         right = tmp - 1;
-        tmpStr = str.substr(left, right + 1);
+        paraStr = str.substr(left, right + 1);
 
         left = tmp + 1;
         right = str.find_first_of(';') - 1;
-        _tmpStr = str.substr(left, right - left + 1);
+        valueStr = str.substr(left, right - left + 1);
 
-        switch(configHash[tmpStr])
+        switch(configHash[paraStr])
         {
         case __RUNTYPE:
-            runType = _tmpStr; break;
+            runType = valueStr; break;
         case __CHANNELDELAY:
-            channelDelay = _tmpStr; break;
+            channelDelay = valueStr; break;
         case __CHANNELTYPE:
-            channelType = _tmpStr;break;
+            channelType = valueStr;break;
         case __CLOCKCYCLE:
-            clockCycle = _tmpStr; break;
+            clockCycle = valueStr; break;
         case __ROUTINGFUNC:
-            _rfName = _tmpStr; break;
+            _rfName = valueStr; break;
         case __TOTALCORENUM:
-            totalCoreNum = stoull(_tmpStr); break;
+            totalCoreNum = stoull(valueStr); break;
         case __TOTALROUTERNUM:
-            totalRouterNum = stoull(_tmpStr); break;
+            totalRouterNum = stoull(valueStr); break;
         case __ROUTERGATENUM:
-            routerGateNum = stoi(_tmpStr); break;
+            routerGateNum = stoi(valueStr); break;
         case __COREGATENUM:
-            coreGateNum = stoi(_tmpStr); break;
+            coreGateNum = stoi(valueStr); break;
         case __READNEDSTYLE:
-            readNedStyle = _tmpStr;break;
+            readNedStyle = valueStr;break;
         case __PACKETFLITS:
-            packetFlits = stoi(_tmpStr); break;
+            packetFlits = stoi(valueStr); break;
         case __TOTALCHANNELNUM:
-            totalChannelNum = stoull(_tmpStr); break;
+            totalChannelNum = stoull(valueStr); break;
         case __SIMTIMELIMIT:
-            setSimTimeLimit(_tmpStr); break;
+            setSimTimeLimit(valueStr); break;
         case __PARTITIONNUM:
-            partitionNum = stoul(_tmpStr);
+            partitionNum = stoul(valueStr);
             coresNumEachPartition.resize(partitionNum);
             routersNumEachPartition.resize(partitionNum);
             break;
         case __PROCNUM:
-            procNum = stoi(_tmpStr);
+            procNum = stoi(valueStr);
             break;
         default:
-            if(tmpStr.find("partition-id") != string::npos)
-                parsePartition(str, tmpStr, _tmpStr);
+            if(paraStr.find("partition-id") != string::npos)
+                parsePartition(str, paraStr, valueStr);
             else
             {
-                cerr << " Unknown Parameter : " << tmpStr << endl;
+                cerr << " Unknown Parameter : " << paraStr << endl;
                 throw runtime_error("");
             }
         }
@@ -200,13 +200,13 @@ void globalVar::setSimTimeLimit(string& str)
     int cnt = 0;
     while( isdigit(str[cnt]) )
         ++cnt;
-    string tmpStr = str.substr(cnt, str.size() - 1);
+    string paraStr = str.substr(cnt, str.size() - 1);
     uint_64 uTimeLimit = stoull( str.substr(0,cnt) );
-    if(tmpStr == "us")// convert us/ms/s to ns
+    if(paraStr == "us")// convert us/ms/s to ns
         uTimeLimit *= 1000;
-    else if(tmpStr == "ms")
+    else if(paraStr == "ms")
         uTimeLimit *= 1000000;
-    else if(tmpStr == "s")
+    else if(paraStr == "s")
         uTimeLimit *= 1000000000;
     simTimeLimit = uTimeLimit;
 }

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <ctime>
+#include <cmath>
 #include <cassert>
 #include <stdexcept>
 #include <cstdlib>
@@ -23,12 +24,15 @@ uint_64 Core::flitIdBase = 0;
 uint_64 Core::packetIdBase = 0;
 uint_64 Core::flitsLifeTimeSum = 0;
 #endif
+const char *paraFmt = "sendTotalFlitsNum recvTotalFlitsNum averageDelay realTime\n";
+const char *dataFmt = "%lld              %lld              %f           %f\n";
 
 void Core::initialize()
 {
     packetFlits = gHandle->getPacketFlits();
     gateNum = gHandle->getCoreGateNum();
-
+    if(!coreId)
+        startRealTime = chrono::system_clock::now();
 #ifdef _PARALLEL_STATISTICS
     statsMqId = gHandle->getStatsMqId();
     procNum = gHandle->getProcNum();
@@ -220,7 +224,7 @@ void Core::finish()
         string str = to_string(_t);
         string randomStr = str.substr(str.size() - 15, str.size() - 1);
         const string resultFile = "serial_" + randomStr + ".log";
-
+        endRealTime = _sclk::now();
         ofs.open(resultFile, ios::app);
 
         ofs << "sendFlitsNum:  " << sendFlitsNum << endl;
@@ -228,21 +232,23 @@ void Core::finish()
         double lifeTime = static_cast<double>(flitsLifeTimeSum);
         double averageDelay;
         averageDelay = lifeTime / recvFlitsNum;
+        double timeSec = (endRealTime - startRealTime).count() * pow(10, -9);
         ofs << "averageDelay:  " << averageDelay << endl;
+        ofs << "realTime:" << timeSec << "s" << endl;
         ofs.close();
     }
 #endif
 
 #ifdef _PARALLEL_STATISTICS
-    statsMsgBuffer *_ptr = new statsMsgBuffer;
-    _ptr->type = 2;
-    i_shm_write(_ptr->sendFlitsNum, sendFlitsNum);
-    i_shm_write(_ptr->recvFlitsNum, recvFlitsNum);
-    i_shm_write(_ptr->sumLifeTime, flitsLifeTimeSum);
-    int _mqId = gHandle->getStatsMqId();
-    int tmp = msgsnd(_mqId, _ptr, sizeof(statsMsgBuffer), 0);
-    if(tmp == -1)
-        throw runtime_error("msgsnd() failed in finish() function");
+        statsMsgBuffer *_ptr = new statsMsgBuffer;
+        _ptr->type = 2;
+        i_shm_write(_ptr->sendFlitsNum, sendFlitsNum);
+        i_shm_write(_ptr->recvFlitsNum, recvFlitsNum);
+        i_shm_write(_ptr->sumLifeTime, flitsLifeTimeSum);
+        int _mqId = gHandle->getStatsMqId();
+        int tmp = msgsnd(_mqId, _ptr, sizeof(statsMsgBuffer), 0);
+        if(tmp == -1)
+            throw runtime_error("msgsnd() failed in finish() function");
 #endif
 }
 

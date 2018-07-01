@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <map>
 #include <stdexcept>
 #include <regex>
@@ -53,9 +54,16 @@ void serialManager::buildNetwork()
 	ifstream ifs;
     string network = gHandle->getNetwork();
     string nedFile = "/home/mytest/qtProject/netSim/topology/" + network + ".ned";
-    ifs.open(nedFile);
+    ifs.open(nedFile, ios::ate);
+    auto size = ifs.tellg();
+    string content(size, '\0');
+    ifs.seekg(0);
+    ifs.read(&content[0], size);
+    istringstream iss(content);
     uint_64 cnt = -1;
-    while(getline(ifs, str))
+    string readNedStyle = gHandle->getReadNedStyle();
+
+    while(getline(iss, str))
     {
         ++cnt;
         cout << "cnt:" << cnt << endl;
@@ -147,6 +155,7 @@ void serialManager::buildNetwork()
             throw runtime_error("");
         }
     }
+    ifs.close();
 }
 
 void serialManager::run()

@@ -4,6 +4,7 @@
 #include <sys/msg.h>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <vector>
 #include <bitset>
 #include <unordered_map>
@@ -126,8 +127,7 @@ void shmManager::recvMsgFromOtherProc()
 #endif
         uint_64 curChannelId = f->currentChannelId;
         Channel * _cPtr = allChannelPtr[curChannelId];
-        if(partitionId == 2)
-            cout << "FUCK" << curChannelId << endl;
+
         _cPtr->pushFlitIntoStack(f);
         //Router *nextRouterPtr = allRouterPtr[f->nextRouterId];
         //nextRouterPtr->cxtInputChannel[]
@@ -152,15 +152,22 @@ void shmManager::buildNetwork()
     ifstream ifs;
     string network = gHandle->getNetwork();
     string nedFile = "/home/mytest/qtProject/netSim/topology/" + network + ".ned";
-    ifs.open(nedFile);
+    ifs.open(nedFile, ios::ate);
+    auto size = ifs.tellg();
+    string content(size, '\0');
+    ifs.seekg(0);
+    ifs.read(&content[0], size);
+    istringstream iss(content);
+    string readNedStyle = gHandle->getReadNedStyle();
+
     size_t tmp;
     uint_64 cnt = 0, channelId = 0, routerCnt = 0, coreCnt = 0;
     uint_64 channelN = gHandle->getTotalChannelNum();
 
     map<uint_64, uint_64> routerPos;
     map<uint_64, uint_64> corePos;
-    ofstream ofs;
-    ofs.open("fuck.log", ios::app);
+
+
     while(getline(ifs, str))
     {
         cout << "cnt:" << cnt << endl;
@@ -300,7 +307,7 @@ void shmManager::buildNetwork()
         if(allRouterPtr[i] == nullptr && partitionId == gHandle->getRouterPartitionId(i))
         {
             cout << i << " " << i << endl;
-            ofs << "Router[" << i << "] hang in the air." << endl;
+            cerr << "Router[" << i << "] hang in the air." << endl;
             throw runtime_error("");
         }
     }

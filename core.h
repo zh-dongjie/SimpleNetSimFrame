@@ -5,6 +5,7 @@
 #include "i_string.h"
 #include <vector>
 #include <unordered_map>
+#include <chrono>
 #include "base_object.h"
 #include "global.h"
 typedef unsigned long long int uint_64;
@@ -38,6 +39,9 @@ class Core :public base_object
 
         virtual ~Core();
 	private:
+        using timePoint = std::chrono::system_clock::time_point;
+        timePoint startRealTime;
+        timePoint endRealTime;
 	    uint_64 coreId = 0;
         int packetFlits;
         int gateNum;
