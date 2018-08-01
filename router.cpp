@@ -80,7 +80,7 @@ void Router::handleMessage(Flit*&f)
         killFlit(f);
 }
 
-uint_64 Router::getRouterId()
+uint_64 Router::getRouterId() const
 {
     return routerId;
 }

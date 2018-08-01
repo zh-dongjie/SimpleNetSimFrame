@@ -16,6 +16,9 @@ class Flit
     public:
         //typedef chrono::steady_clock::time_point timePoint;
         Flit(){}
+        Flit(const Core&) = delete;
+        Flit(Core&&) = delete;
+        Flit& operator =(Flit&) = delete;
         bool head = 0;
         bool tail = 0;
         uint_64 srcId = 0;
@@ -26,13 +29,13 @@ class Flit
 		int arrivalGate; // added for flood routing algorithm
         vector<uint_64> crossRouterId;
 
-        uint_64 id;
-		uint_64 pid;
+        uint_64 id = 0;
+		uint_64 pid = 0;
         uint_64 lastRouterId;
-        uint_64 currentRouterId;
-        uint_64 nextRouterId;
+        uint_64 currentRouterId = 0;
+        uint_64 nextRouterId = 0;
         uint_64 currentChannelId = 0;
-        int hopCnt;
+        int hopCnt = -1;
 		int cycle;//clock-cycle,record SimTime when the flit should be handled.
         //timePoint realTimeStamp;
 

@@ -15,6 +15,8 @@ class shmManager:public trafficManager
 {
     public:
         shmManager(globalVar*g):trafficManager(g){}
+
+
         virtual void initialize() override;
         virtual void sendMsgToOtherProc(Flit*) override;
         virtual void recvMsgFromOtherProc() override;
@@ -30,17 +32,17 @@ class shmManager:public trafficManager
 	    vector<int> otherProcId;
 		unordered_map<int,unsigned char*> procShmAddr;
 
-	    int shmId;
+	    int shmId = -1;
         int openFlag = 0;
         const char* shmPath = "/tmp/shm"; //need to verify
 		unsigned char *ptr = nullptr;
 	    struct shmid_ds buff;
 
-        int gShmId;
+        int gShmId = -1;
         const char* gShmPath = "/tmp/gShm";
-        unsigned char* gPtr;
-        int partitionId;
-        pid_t gProcId;
+        unsigned char* gPtr = nullptr;
+        int partitionId = -1;
+        pid_t gProcId = 0;
 
 		void packMessage(Flit* f);
 		void unpackMessage();

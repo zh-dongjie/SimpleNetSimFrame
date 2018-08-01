@@ -20,12 +20,13 @@ using namespace std;
 class trafficManager:public timeModule
 {
     public:
-        trafficManager(trafficManager&) = delete;
+        trafficManager(const trafficManager&) = delete;
+        trafficManager(trafficManager &&) = delete;
         trafficManager & operator=(trafficManager&) = delete;
         static trafficManager* getConcretManager(string &, globalVar* );
         virtual void initialize() = 0;
         //void loadParamater(string network, string nedFile);
-		
+
         //friend class globalVar;
         virtual void sendMsgToOtherProc(Flit*f){}
         virtual void recvMsgFromOtherProc(){}
@@ -48,10 +49,10 @@ class trafficManager:public timeModule
         map<uint_64, Core*> allCorePtr;
         map<uint_64, Channel*> allChannelPtr;
 		map<string, string> netConfig;
-        Router* routerSpool;
-        Core* coreSpool;
-        Channel* outputChannelSpool;
-        Channel* inputChannelSpool;
+        Router* routerSpool = nullptr;
+        Core* coreSpool = nullptr;
+        Channel* outputChannelSpool = nullptr;
+        Channel* inputChannelSpool = nullptr;
         bool nedReady = 1;
 };
 

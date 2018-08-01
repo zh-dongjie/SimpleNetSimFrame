@@ -45,4 +45,7 @@ void i_shm_read( unsigned char* ptr, T& data)
     data = std::bitset<n>(binary).to_ulong();
 }
 
+void i_shm_write(unsigned char *ptr, double data);
+
+void i_shm_read(unsigned char *ptr, double &data);
 #endif

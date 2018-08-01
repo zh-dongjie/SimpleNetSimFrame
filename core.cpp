@@ -252,7 +252,7 @@ void Core::finish()
 #endif
 }
 
-uint_64 Core::getCoreId()
+uint_64 Core::getCoreId()const
 {
     return this->coreId;
 }

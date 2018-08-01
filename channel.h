@@ -26,24 +26,24 @@ class Channel:public base_object
         virtual void evaluate() override;
         friend void Router::readInput();
         friend void Core::readInput();
-        bool empty();
+        bool empty() const;
         void setBoundary(){boundary = 1;}
-        bool isBoundary(){return boundary;}
+        bool isBoundary() const{return boundary;}
         void setChannelId(uint_64 _channelId){channelId = _channelId;}
-        uint_64 getChannelId(){return channelId;}
+        uint_64 getChannelId() const{return channelId;}
         virtual ~Channel(){}
 
 
 	private:
-        uint16_t endProc;
+        uint16_t endProc = 0;
         bool boundary = 0;
         bool dam = _OPEN;
-        uint_64 channelId;
-		int startNodeId;
-		int endNodeId;
+        uint_64 channelId = 0;
+		int startNodeId = -1;
+		int endNodeId = -1;
         deque<Flit*> flitsStack;
         struct lastStepState pre;
-        globalVar * gHandle;
+        globalVar * gHandle = nullptr;
 };
 
 #endif

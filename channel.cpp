@@ -28,7 +28,7 @@ void Channel::evaluate()
     }
 }
 
-bool Channel::empty()
+bool Channel::empty() const
 {
     return pre.flitsStack.empty();
 }

@@ -14,10 +14,13 @@ class routingFunc
 {
     public:
         routingFunc(globalVar *g);
-        void initialize();
-        routingFunc(string str) = delete;
-        routingFunc(routingFunc &rf) = delete;
+        routingFunc(routingFunc &&) = delete;
+
+        routingFunc() = delete;
+        routingFunc(const routingFunc &rf) = delete;
         routingFunc & operator=(const routingFunc&) = delete;
+
+        void initialize();
 
         int getOutputGateId(string rf, Flit* f, Router* node);
 

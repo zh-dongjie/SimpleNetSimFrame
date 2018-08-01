@@ -14,6 +14,8 @@
 #include "global.h"
 #include "router.h"
 #include "routing_func.h"
+#include "./utilities/randomNumGen.h"
+
 using namespace std;
 
 int globalVar::singleFlag = 0;
@@ -35,7 +37,8 @@ enum paramHash
     __TOTALCHANNELNUM,
     __SIMTIMELIMIT,
     __PARTITIONNUM,
-    __PROCNUM
+    __PROCNUM,
+    __RANDOMSTYLE
 };
 
 globalVar::globalVar(string &iniFile)
@@ -116,6 +119,15 @@ void globalVar::loadParameter(string &iniFile)
         case __PROCNUM:
             procNum = stoi(valueStr);
             break;
+        case __RANDOMSTYLE:
+            if(valueStr == "bernoulli" || valueStr == "uniform")
+                rng = randomNumGenerator::getConcretRandomGen(valueStr);
+            else
+            {
+                cerr << "Unknown randomStyle : " << paraStr << endl;
+                throw runtime_error("");
+            }
+            break;
         default:
             if(paraStr.find("partition-id") != string::npos)
                 parsePartition(str, paraStr, valueStr);
@@ -147,6 +159,7 @@ void globalVar::initHash()
     configHash["sim-time-limit"] = x++;
     configHash["partitionNum"] = x++;
     configHash["procNum"] = x++;
+    configHash["randomStyle"] = x++;
 }
 
 void globalVar::printConfig()
@@ -255,10 +268,13 @@ bool globalVar::formatChk(string& target)
 
 uint_64 globalVar::getRandomUint(uint_64 left, uint_64 right)
 {
+    /*
     random_device r;
     default_random_engine gen(r());
     uniform_int_distribution<int> dist(left, right);
     return dist(gen);
+    */
+    return rng->getUint(left, right);
 }
 
 Router* globalVar::getRouterPtr(uint_64 routerId)
@@ -285,4 +301,9 @@ int globalVar::getCorePartitionId(uint_64 coreId)
         return corePartition[coreId];
     else
         return -1;
+}
+
+globalVar::~globalVar()
+{
+
 }

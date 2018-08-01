@@ -21,12 +21,15 @@ class Router : public base_object
 {
     public:
         Router(){}
+        Router(const Router&) = delete;
+        Router(Router &&) = delete;
+        Router& operator=(const Router&) = delete;
 
         virtual void initialize() override;
         virtual void handleMessage(Flit* &f) override;
 		virtual void finish() override;
-		uint_64 getRouterId();
-        int getGatesNum(){return gatesNum;}
+		uint_64 getRouterId() const;
+        int getGatesNum() const{return gatesNum;}
 		void putFlitIntoStack(Flit* f);
         Flit* popFlitFromStack();
         void generateFlits(vector<Flit*>& srcFlit);
@@ -56,12 +59,12 @@ class Router : public base_object
 		int packetFlits = 1;
 
 
-        routingFunc* _rfPtr;
-        string _rfName;
+        routingFunc* _rfPtr = nullptr;
+        string _rfName = "flood";
 
 		vector<int> linkNodeId;
         deque<Flit*> sourceFlits;//message received from outside are temporarily stored here
-        globalVar* gHandle;
+        globalVar* gHandle = nullptr;
 
         vector<int> routingTable; //added for routingTable algorithm
 

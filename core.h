@@ -20,6 +20,10 @@ class Core :public base_object
 {
     public:
         Core(){}
+        Core(const Core&) = delete;
+        Core(Core&&) = delete;
+        Core & operator=(const Core&) = delete;
+
         virtual void initialize() override;
         virtual void readInput() override;
         virtual void evaluate() override;
@@ -30,9 +34,9 @@ class Core :public base_object
         void sendDirect(Flit* f, string destModule, uint_64 moduleId, string gateType, int gateId, uint_64 delay);
 
         void killFlit(Flit* &f);
-		uint_64 getCoreId();
-        Channel *getInputChannelPtr(int inputGateId){return cxtInputChannel[inputGateId];}
-        Channel *getOutputChannelPtr(int outputGateId){return cxtOutputChannel[outputGateId];}
+		uint_64 getCoreId() const;
+        Channel *getInputChannelPtr(int inputGateId) const{return cxtInputChannel[inputGateId];}
+        Channel *getOutputChannelPtr(int outputGateId) const{return cxtOutputChannel[outputGateId];}
         friend class serialManager;
         friend class shmManager;
         //friend class sckManager;
@@ -43,8 +47,8 @@ class Core :public base_object
         timePoint startRealTime;
         timePoint endRealTime;
 	    uint_64 coreId = 0;
-        int packetFlits;
-        int gateNum;
+        int packetFlits = 1;
+        int gateNum = 1;
         void generateFlits();
         bool isGenFlits();
 
@@ -52,15 +56,15 @@ class Core :public base_object
         vector<Flit*> sinkFlits;
 
 		uint_64 getDestId();
-		globalVar* gHandle;
-        routingFunc* _rf;
-        string _rfName;
+		globalVar* gHandle = nullptr;
+        routingFunc* _rf = nullptr;
+        string _rfName = "flood";
 
         unordered_map<uint_64, int> gateIdHead;//record which gate the head flit go to.      pid->gate
         vector<Channel*> cxtOutputChannel;//gateId -> channelAddr
         vector<Channel*> cxtInputChannel;//gateId -> channelAddr
 
-        uint_64 networkTotalCores;
+        uint_64 networkTotalCores = -1;
 
 #ifdef _SERIAL_STATISTICS
         static uint_64 recvFlitsNum;

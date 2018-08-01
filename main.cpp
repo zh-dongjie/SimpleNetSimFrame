@@ -132,6 +132,8 @@ int main(int argc,char**argv)
     }
     else
         throw runtime_error("Unknown Runtype.");
+    delete _TF;
+    delete gHandle;
     return 0;
 }
 

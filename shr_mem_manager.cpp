@@ -168,10 +168,12 @@ void shmManager::buildNetwork()
     map<uint_64, uint_64> corePos;
 
 
-    while(getline(ifs, str))
+    while(getline(iss, str))
     {
-        cout << "cnt:" << cnt << endl;
-        cout << str << endl;
+#ifdef _PRINT_DATA_STRAM
+        std::cerr << "cnt:" << cnt << endl;
+        std::cerr << str << endl;
+#endif
         if( nedCheck(str) && nedReady)
         {
             flag = 0;

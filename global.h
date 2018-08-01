@@ -7,12 +7,12 @@
 #include <unordered_map>
 using namespace std;
 //#define _PRINT_DATA_STREAM
-#define _SERIAL_STATISTICS
-//#define _PARALLEL_STATISTICS
+//#define _SERIAL_STATISTICS
+#define _PARALLEL_STATISTICS
 typedef unsigned long long int uint_64;
 #define SVSHM_MODE 0600
 
-
+class randomNumGenerator;
 class trafficManager;
 class Router;
 class Core;
@@ -23,6 +23,7 @@ class globalVar
     public:
         globalVar(string& iniFile);
 	    globalVar(globalVar const &) = delete;
+	    globalVar(globalVar &&) = delete;
 		void operator = (globalVar const&) = delete;
 
 		void loadParameter(string& iniFile);
@@ -74,7 +75,7 @@ class globalVar
         uint_64 getChannelsNumInPartition(int partId){return channelsNumEachPartition[partId];}
         uint_64 getCoresNumInPartition(int partId){return coresNumEachPartition[partId];}
         uint_64 getRoutersNumInPartion(int partId){return routersNumEachPartition[partId];}
- 		~globalVar(){}
+ 		~globalVar();
     private:
         bool formatChk(string& target);
         void initHash();
@@ -121,5 +122,6 @@ class globalVar
         unsigned char* gMemPtr = nullptr;
         int gShmId = -1;
         unordered_map<string, int> configHash;
+        randomNumGenerator *rng;
 };
 #endif
