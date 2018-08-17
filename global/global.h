@@ -8,7 +8,7 @@
 using namespace std;
 //#define _PRINT_DATA_STREAM
 //#define _SERIAL_STATISTICS
-#define _PARALLEL_STATISTICS
+//#define _PARALLEL_STATISTICS
 typedef unsigned long long int uint_64;
 #define SVSHM_MODE 0600
 

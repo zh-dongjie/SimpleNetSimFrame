@@ -22,14 +22,14 @@ class routingFunc
 
         void initialize();
 
-        int getOutputGateId(string rf, Flit* f, Router* node);
+        virtual int getOutputGateId(string rf, Flit* f, Router* node);
 
         int flood(Flit* f, Router* node);
         int shortest_path(Flit* f, Router* node);
         int routing_table(Flit*f, Router* node);
 
         unordered_map<uint_64,map<uint_64, int>> _RT;//destId --> gateId
-        ~routingFunc(){}
+        virtual ~routingFunc(){}
 
 	private:
 
