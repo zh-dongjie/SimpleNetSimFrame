@@ -2,12 +2,14 @@
 #define _SOCKET_MANAGER
 
 #include <string>
+#include <vector>
+#include <unordered_map>
 #include "manager.h"
-class sckManager: public trafficManager
+class SckManager: public trafficManager
 {
     public:
 
-        sckManager(globalVar*g):trafficManager(g){}
+        SckManager(globalVar*g):trafficManager(g){}
 
         virtual void initialize() override;
 	    virtual void buildNetwork() override;
@@ -20,6 +22,16 @@ class sckManager: public trafficManager
 	private:
         void recvMsgFromOtherMachine();
         void sendMsgToOtherMachine(Flit*f);
+		std::unordered_map<std::string, int> ipToSockfd;
+        std::vector<int, std::vector<int>> partitionInHost;
+        std::vector<int, std::vector<pid_t>> procInPartition;
+		std::vector<int> otherProcID;
+        int hostID = -1;
+        int shmID = -1;
+        const char* gShmPath = "/tmp/gShm";
+		pid_t gProcID = 0;
+		int gHostID = -1;
+        
 };
 
 #endif

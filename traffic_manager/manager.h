@@ -1,5 +1,5 @@
-#ifndef _MANAGE_H
-#define _MANAGE_H
+#ifndef MANAGE_H_
+#define MANAGE_H_
 #include <iostream>
 #include <fstream>
 #include <map>
@@ -9,7 +9,7 @@
 #include <regex>
 #include <stdexcept>
 
-#include "time_module.h"
+#include "../global/time_module.h"
 class Router;
 class Flit;
 class Core;

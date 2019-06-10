@@ -8,47 +8,47 @@
 
 using namespace std;
 
-void sckManager::initialize()
+void SckManager::initialize()
 {
 
 }
 
-void sckManager::buildNetwork()
+void SckManager::buildNetwork()
 {
 
 }
 
-void sckManager::sendMsgToOtherProc(Flit* f)
+void SckManager::sendMsgToOtherProc(Flit* f)
 {
 
 }
 
-void sckManager::sendMsgToOtherMachine(Flit*f)
+void SckManager::sendMsgToOtherMachine(Flit*f)
 {
 
 }
 
-void sckManager::recvMsgFromOtherProc()
+void SckManager::recvMsgFromOtherProc()
 {
 
 }
 
-void sckManager::recvMsgFromOtherMachine()
+void SckManager::recvMsgFromOtherMachine()
 {
 
 }
 
-void sckManager::run()
+void SckManager::run()
 {
 
 }
 
-void sckManager::finish()
+void SckManager::finish()
 {
 
 }
 
-sckManager::~sckManager()
+SckManager::~SckManager()
 {
 
 }

@@ -1,5 +1,5 @@
-#ifndef _GLOBAL_H
-#define _GLOBAL_H
+#ifndef GLOBAL_H_
+#define GLOBAL_H_
 
 #include <vector>
 #include <map>
