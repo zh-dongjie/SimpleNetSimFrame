@@ -11,11 +11,11 @@
 #include <thread>
 #include <signal.h>
 #include <cassert>
-#include "i_shm.h"
+#include "./utilities/i_shm.h"
 #include "msgbuffer.h"
 #include "flit.h"
-#include "global.h"
-#include "manager.h"
+#include "./global/global.h"
+#include "./traffic_manager/manager.h"
 using namespace std;
 
 #define SVMSG_MODE 111000000
@@ -30,7 +30,13 @@ void destroyShmMem(globalVar *const gHandle);
 
 void usage()
 {
-    cerr << "[./netsim] [INIFILE]\n--help    list this table" << endl;
+	std::cerr << "[./netsim] --fast [INIFILE]       run netsim without GUI.\n\
+			      [./netsim] --quite [INIFILE]      run netsim without GUI and output.\n\
+				  [./netsim] --help       			list this table\n\
+				  [./netsim] --visual [INIFILE]     run netsim visually\n\
+				  [./netsim] --vvv [INIFILE]        run netsim visually with all details.\n\
+				  [./nedwr] [TOPOFile]             	use NED editor to write NED\n\
+				  " << std::endl;
 }
 
 int main(int argc,char**argv)

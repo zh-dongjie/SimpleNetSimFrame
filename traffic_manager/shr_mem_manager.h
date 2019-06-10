@@ -30,7 +30,7 @@ class shmManager:public trafficManager
         //vector<uint_64> routerIdInProc;
         //vector<uint_64> coreIdInProc;
 	    vector<int> otherProcId;
-		unordered_map<int,unsigned char*> procShmAddr;
+		unordered_map<int, unsigned char*> procShmAddr;
 
 	    int shmId = -1;
         int openFlag = 0;
