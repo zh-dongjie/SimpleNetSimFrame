@@ -5,11 +5,11 @@
 #include <vector>
 #include <unordered_map>
 #include "manager.h"
-class SckManager: public trafficManager
+class sckManager: public trafficManager
 {
     public:
 
-        SckManager(globalVar*g):trafficManager(g){}
+        sckManager(globalVar*g):trafficManager(g){}
 
         virtual void initialize() override;
 	    virtual void buildNetwork() override;
@@ -25,12 +25,17 @@ class SckManager: public trafficManager
 		std::unordered_map<std::string, int> ipToSockfd;
         std::vector<int, std::vector<int>> partitionInHost;
         std::vector<int, std::vector<pid_t>> procInPartition;
-		std::vector<int> otherProcID;
-        int hostID = -1;
+		std::map<std::string, int> portNoMap;
+        std::vector<int> otherProcID;
+        std::string hostIP;
+        size_t hostNum = -1;
         int shmID = -1;
-        const char* gShmPath = "/tmp/gShm";
-		pid_t gProcID = 0;
+        const char *gShmPath = "/tmp/gShm";
+        unsigned char *gPtr = nullptr;
+        int gShmID = -1;
+		int gProcID = 0;
 		int gHostID = -1;
+		unsigned long int partitionID = 0;
         
 };
 

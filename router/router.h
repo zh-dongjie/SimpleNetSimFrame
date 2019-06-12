@@ -43,7 +43,7 @@ class Router : public base_object
 
         friend class serialManager;
         friend class shmManager;
-        //friend class sckManager;
+        friend class sckManager;
         virtual ~Router();
 
 	private:

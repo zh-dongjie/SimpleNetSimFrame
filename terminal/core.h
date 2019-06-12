@@ -39,6 +39,7 @@ class Core :public base_object
         Channel *getOutputChannelPtr(int outputGateId) const{return cxtOutputChannel[outputGateId];}
         friend class serialManager;
         friend class shmManager;
+        friend class sckManager;
         //friend class sckManager;
 
         virtual ~Core();

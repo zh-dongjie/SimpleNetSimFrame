@@ -11,6 +11,7 @@
 #include <thread>
 #include <signal.h>
 #include <cassert>
+#include <getopt.h>
 #include "./utilities/i_shm.h"
 #include "msgbuffer.h"
 #include "flit.h"
@@ -32,10 +33,9 @@ void usage()
 {
 	std::cerr << "[./netsim] --fast [INIFILE]       run netsim without GUI.\n\
 			      [./netsim] --quite [INIFILE]      run netsim without GUI and output.\n\
-				  [./netsim] --help       			list this table\n\
 				  [./netsim] --visual [INIFILE]     run netsim visually\n\
 				  [./netsim] --vvv [INIFILE]        run netsim visually with all details.\n\
-				  [./nedwr] [TOPOFile]             	use NED editor to write NED\n\
+				  [./netsim] --help                 list this table\n\
 				  " << std::endl;
 }
 

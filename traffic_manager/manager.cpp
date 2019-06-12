@@ -5,6 +5,7 @@
 #include "manager.h"
 #include "serial_manager.h"
 #include "shr_mem_manager.h"
+#include "socket_manager.h"
 
 using namespace std;
 
@@ -18,6 +19,8 @@ trafficManager* trafficManager::getConcretManager(string& _ts, globalVar* g)
             _tf = new serialManager(g);
 		else if(_ts == "single-machine")
             _tf = new shmManager(g);
+		else if(_ts == "Multi-machine")
+		    _tf = new sckManager(g);
 		else
 			throw runtime_error("please select right trafficManager style.");
 		return _tf;
