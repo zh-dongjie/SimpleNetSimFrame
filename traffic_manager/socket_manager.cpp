@@ -16,6 +16,8 @@
 #include "core.h"
 #include "router.h"
 #include "i_shm.h"
+#include "../channel.h"
+
 using namespace std;
 
 int setUpSocket(const std::string &ipStr, int portNo)

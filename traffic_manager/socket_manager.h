@@ -23,8 +23,8 @@ class sckManager: public trafficManager
         void recvMsgFromOtherMachine();
         void sendMsgToOtherMachine(Flit*f);
 		std::unordered_map<std::string, int> ipToSockfd;
-        std::vector<int, std::vector<int>> partitionInHost;
-        std::vector<int, std::vector<pid_t>> procInPartition;
+        std::map<int, std::vector<int>> partitionInHost;
+        std::map<int, std::vector<pid_t>> procInPartition;
 		std::map<std::string, int> portNoMap;
         std::vector<int> otherProcID;
         std::string hostIP;
