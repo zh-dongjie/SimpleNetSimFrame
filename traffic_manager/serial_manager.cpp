@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <regex>
 #include <ctype.h>
+#include <experimental/filesystem>
 #include "i_string.h"
 #include "channel.h"
 #include "router.h"
@@ -53,7 +54,11 @@ void serialManager::buildNetwork()
     uint tmp;
 	ifstream ifs;
     string network = gHandle->getNetwork();
-    string nedFile = "/home/mytest/qtProject/netSim/topology/" + network + ".ned";
+    string nedFile = "./topology/" + network + ".ned";
+    if(!std::experimental::filesystem::exists(nedFile))
+    {
+        throw std::runtime_error("cannot find " + nedFile);
+    }
     ifs.open(nedFile, ios::ate);
     auto size = ifs.tellg();
     string content(size, '\0');

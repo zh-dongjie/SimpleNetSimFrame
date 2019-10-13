@@ -1,10 +1,10 @@
 #ifndef MSGBUFFER_H
 #define MSGBUFFER_H
 using uchar = unsigned char;
-enum message{generalMsg = 1L, statsMsg = 2L};
+enum message{GeneralMsg = 1L, StatsMsg = 2L};
 struct msgBuffer
 {
-    long type = generalMsg;
+    long type = GeneralMsg;
     uchar head[1];
     uchar tail[1];
     uchar state[1];
@@ -24,7 +24,7 @@ struct msgBuffer
 
 struct statsMsgBuffer
 {
-    long type = statsMsg;
+    long type = StatsMsg;
     uchar sendFlitsNum[8];
     uchar recvFlitsNum[8];
     uchar sumLifeTime[8];

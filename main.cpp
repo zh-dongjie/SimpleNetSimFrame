@@ -110,7 +110,7 @@ int main(int argc,char**argv)
             while(!readyFlag)
             {
                 readyFlag = 1;
-                unsigned char *_tmp = gPtr;
+                volatile unsigned char *_tmp = gPtr;
                 //sleep(30);
                 //wait();
                 for(uint i = 0; i < procNum; ++i)

@@ -40,7 +40,7 @@ class shmManager:public trafficManager
 
         int gShmId = -1;
         const char* gShmPath = "/tmp/gShm";
-        unsigned char* gPtr = nullptr;
+        volatile unsigned char* gPtr = nullptr;
         int partitionId = -1;
         pid_t gProcId = 0;
 

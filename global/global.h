@@ -8,7 +8,9 @@
 using namespace std;
 //#define _PRINT_DATA_STREAM
 //#define _SERIAL_STATISTICS
-//#define _PARALLEL_STATISTICS
+#ifndef _SERIAL_STATISTICS
+    #define _PARALLEL_STATISTICS
+#endif
 typedef unsigned long long int uint_64;
 #define SVSHM_MODE 0600
 #define ASSERT(exp) assert(exp)

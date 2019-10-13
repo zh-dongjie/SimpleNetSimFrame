@@ -241,7 +241,7 @@ void Core::finish()
 
 #ifdef _PARALLEL_STATISTICS
         statsMsgBuffer *_ptr = new statsMsgBuffer;
-        _ptr->type = 2;
+        _ptr->type = StatsMsg;
         i_shm_write(_ptr->sendFlitsNum, sendFlitsNum);
         i_shm_write(_ptr->recvFlitsNum, recvFlitsNum);
         i_shm_write(_ptr->sumLifeTime, flitsLifeTimeSum);

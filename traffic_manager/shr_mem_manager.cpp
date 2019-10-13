@@ -12,6 +12,8 @@
 #include <signal.h>
 #include <typeinfo>
 #include <cassert>
+#include <experimental/filesystem>
+#include <stdexcept>
 #include "i_string.h"
 #include "msgbuffer.h"
 #include "channel.h"
@@ -147,11 +149,14 @@ void shmManager::buildNetwork()
     int startGate, endGate;
     int leftEnd, rightEnd;
     int flag;
-
     uint_64 itmp;
     ifstream ifs;
     string network = gHandle->getNetwork();
-    string nedFile = "/home/mytest/qtProject/netSim/topology/" + network + ".ned";
+    string nedFile = "./topology/" + network + ".ned";
+    if(!std::experimental::filesystem::exists(nedFile))
+    {
+        throw std::runtime_error("cannot find " + nedFile);
+    }
     ifs.open(nedFile, ios::ate);
     auto size = ifs.tellg();
     string content(size, '\0');
@@ -367,8 +372,8 @@ void shmManager::run()
             outputChannelSpool[i].evaluate();
             inputChannelSpool[i].evaluate();
         }
-        if(curTime%10 == 0)
-            cout << "The Task Schedule : " << static_cast<double>(curTime)/uTimeLimit*100 << "%......" << endl;
+        if(curTime % 100 == 0)
+            cout << "The Task Schedule : " << static_cast<double>(curTime) / uTimeLimit * 100 << "%......" << endl;
         curTime += 2;
 #ifdef _PRINT_DATA_STREAM
         cout << "pattitionId:" << partitionId << endl;
