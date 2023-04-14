@@ -52,7 +52,7 @@ void serialManager::buildNetwork()
 
     uint_64 itmp;
     uint tmp;
-	ifstream ifs;
+    ifstream ifs;
     string network = gHandle->getNetwork();
     string nedFile = "./topology/" + network + ".ned";
     if(!std::experimental::filesystem::exists(nedFile))

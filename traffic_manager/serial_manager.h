@@ -19,12 +19,12 @@ class serialManager:public trafficManager
         serialManager& operator=(const serialManager&) = delete;
 
         virtual void initialize() override;
-		virtual void buildNetwork() override;
-		virtual void run() override;
+        virtual void buildNetwork() override;
+        virtual void run() override;
         virtual void finish() override;
 
         virtual ~serialManager();
-	private:
+    private:
 
 };
 

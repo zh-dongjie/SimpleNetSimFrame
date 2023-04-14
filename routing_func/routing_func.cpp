@@ -31,10 +31,10 @@ int routingFunc::flood(Flit* f, Router* _router)
     //cout << "routingFunction flood is evaluating..." << endl;
     int outputGateId = f->arrivalGate;
     if(_existed(f->crossRouterId, _router->getRouterId()) )
-	{
-	    f->state = _STOP;
-	    return -1;
-	}
+    {
+        f->state = _STOP;
+        return -1;
+    }
     else if(!f->timer)
     {
         f->state = _STOP;

@@ -18,6 +18,6 @@ class base_object:public timeModule
         virtual void readInput(){}
         virtual void evaluate(){}
         virtual ~base_object(){}
-	private:
+    private:
 };
 #endif

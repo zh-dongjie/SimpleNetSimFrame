@@ -24,19 +24,19 @@ class Flit
         uint_64 srcId = 0;
         uint_64 destId;
 
-	    int timer = MAX_HOPS; //added for flood routing algorithm
-		bool state = _RUN;
-		int arrivalGate; // added for flood routing algorithm
+        int timer = MAX_HOPS; //added for flood routing algorithm
+        bool state = _RUN;
+        int arrivalGate; // added for flood routing algorithm
         vector<uint_64> crossRouterId;
 
         uint_64 id = 0;
-		uint_64 pid = 0;
+        uint_64 pid = 0;
         uint_64 lastRouterId;
         uint_64 currentRouterId = 0;
         uint_64 nextRouterId = 0;
         uint_64 currentChannelId = 0;
         int hopCnt = -1;
-		int cycle;//clock-cycle,record SimTime when the flit should be handled.
+        int cycle;//clock-cycle,record SimTime when the flit should be handled.
         //timePoint realTimeStamp;
 
         uint_64 actSimTime = 0;

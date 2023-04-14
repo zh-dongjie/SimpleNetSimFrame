@@ -20,23 +20,23 @@ class shmManager:public trafficManager
         virtual void initialize() override;
         virtual void sendMsgToOtherProc(Flit*) override;
         virtual void recvMsgFromOtherProc() override;
-		virtual void buildNetwork() override;
-		virtual void run() override;
+        virtual void buildNetwork() override;
+        virtual void run() override;
         virtual void finish() override;
 
-		virtual ~shmManager();
-	private:
+        virtual ~shmManager();
+    private:
 
         //vector<uint_64> routerIdInProc;
         //vector<uint_64> coreIdInProc;
-	    vector<int> otherProcId;
-		unordered_map<int, unsigned char*> procShmAddr;
+        vector<int> otherProcId;
+        unordered_map<int, unsigned char*> procShmAddr;
 
-	    int shmId = -1;
+        int shmId = -1;
         int openFlag = 0;
         const char* shmPath = "/tmp/shm"; //need to verify
-		unsigned char *ptr = nullptr;
-	    struct shmid_ds buff;
+        unsigned char *ptr = nullptr;
+        struct shmid_ds buff;
 
         int gShmId = -1;
         const char* gShmPath = "/tmp/gShm";
@@ -44,14 +44,14 @@ class shmManager:public trafficManager
         int partitionId = -1;
         pid_t gProcId = 0;
 
-		void packMessage(Flit* f);
-		void unpackMessage();
+        void packMessage(Flit* f);
+        void unpackMessage();
 
-		template<typename T>
-	    void pack(T para);
+        template<typename T>
+        void pack(T para);
 
-		template<typename T>
-		void unpack(T & para);
+        template<typename T>
+        void unpack(T & para);
 };
 
 #endif

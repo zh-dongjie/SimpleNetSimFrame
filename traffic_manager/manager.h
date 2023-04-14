@@ -36,19 +36,19 @@ class trafficManager:public timeModule
         Core* getCorePtr(uint_64 coreId){return allCorePtr[coreId];}
         Router* getRouterPtr(uint_64 routerId){return allRouterPtr[routerId];}
         virtual ~trafficManager(){}
-	private:
+    private:
         static trafficManager* _tf;
 
     protected:
         trafficManager(globalVar*g):gHandle(g){}
         bool nedCheck(string &target);
-		globalVar* gHandle;
-	    string runStyle;
-	   // string cfgDefault;
+        globalVar* gHandle;
+        string runStyle;
+       // string cfgDefault;
         map<uint_64, Router*> allRouterPtr;
         map<uint_64, Core*> allCorePtr;
         map<uint_64, Channel*> allChannelPtr;
-		map<string, string> netConfig;
+        map<string, string> netConfig;
         Router* routerSpool = nullptr;
         Core* coreSpool = nullptr;
         Channel* outputChannelSpool = nullptr;

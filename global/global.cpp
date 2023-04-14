@@ -43,8 +43,8 @@ enum paramHash
 
 globalVar::globalVar(string &iniFile)
 {
-	if(singleFlag)
-	    throw runtime_error("class glovalVar should have only one instance.");
+    if(singleFlag)
+        throw runtime_error("class glovalVar should have only one instance.");
     loadParameter(iniFile);
     _rfPtr = new routingFunc(this);
     ++singleFlag;
@@ -58,20 +58,20 @@ void globalVar::loadParameter(string &iniFile)
 
     int left = 0,right = 0,line = 0,flag = 0;
     string str,paraStr,valueStr;
-	ifstream ifs;
-	ifs.open(iniFile);
+    ifstream ifs;
+    ifs.open(iniFile);
     while(getline(ifs, str))
-	{
-	    ++line;
+    {
+        ++line;
         if((left = str.find("[") != string::npos) && str.find("config") != string::npos)
-		{
+        {
             ++flag;
             if( flag == 2) break;
-			right = str.find("]");
+            right = str.find("]");
             str = str.substr(left + 7, right - left - 7);
             network = str;
             getline(ifs, str);
-		}
+        }
         cout << "load " << network << "..." << endl;
 
         size_t tmp = str.find_first_of('=');
@@ -193,18 +193,18 @@ void globalVar::printConfig()
 uint_64 globalVar::getUniqId(string objType)
 {
     int tmpId;
-	if(objType == "message")
-	{
-	    tmpId = flitId;
-		++flitId;
-	}
-	else if(objType == "packet")
-	{
-	    tmpId = packetId;
-		++packetId;
-	}
-	else
-	    throw runtime_error("wrong objType.can't give unique Id");
+    if(objType == "message")
+    {
+        tmpId = flitId;
+        ++flitId;
+    }
+    else if(objType == "packet")
+    {
+        tmpId = packetId;
+        ++packetId;
+    }
+    else
+        throw runtime_error("wrong objType.can't give unique Id");
     return tmpId;
 }
 

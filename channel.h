@@ -34,13 +34,13 @@ class Channel:public base_object
         virtual ~Channel(){}
 
 
-	private:
+    private:
         uint16_t endProc = 0;
         bool boundary = 0;
         bool dam = _OPEN;
         uint_64 channelId = 0;
-		int startNodeId = -1;
-		int endNodeId = -1;
+        int startNodeId = -1;
+        int endNodeId = -1;
         deque<Flit*> flitsStack;
         struct lastStepState pre;
         globalVar * gHandle = nullptr;

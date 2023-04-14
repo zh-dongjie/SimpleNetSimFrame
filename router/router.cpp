@@ -54,17 +54,17 @@ void Router::evaluate()
 void Router::handleMessage(Flit*&f)
 {
     int outGateId ;
-	if(f->head)
-	{
+    if(f->head)
+    {
         outGateId = _rfPtr->getOutputGateId(_rfName, f, this);
-		if(!f->tail)
+        if(!f->tail)
             gateIdHead.insert(make_pair(f->pid, outGateId));
     }
     else if(!f->head && f->tail)
-	{
+    {
         outGateId = gateIdHead[f->pid];
-	    gateIdHead.erase(f->pid);
-	}
+        gateIdHead.erase(f->pid);
+    }
     else if(!f->head && !f->tail)
     {
         outGateId = gateIdHead[f->pid];
@@ -108,7 +108,7 @@ Flit* Router::popFlitFromStack()
 {
     Flit* tmpPtr = sourceFlits.back();
     sourceFlits.pop_back();
-	return tmpPtr;
+    return tmpPtr;
 }
 
 void Router::killFlit(Flit* f)
@@ -127,9 +127,9 @@ void Router::finish()
 Router::~Router()
 {
     for(auto iter:sourceFlits)
-	{
-	    delete iter;
-	}
+    {
+        delete iter;
+    }
     for(auto iter:curFlit)
     {
         delete iter;

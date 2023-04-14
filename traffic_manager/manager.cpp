@@ -14,21 +14,21 @@ trafficManager*trafficManager::_tf = nullptr;
 trafficManager* trafficManager::getConcretManager(string& _ts, globalVar* g)
 {
     if(_tf == nullptr)
-	{
-		if(_ts == "serial")
+    {
+        if(_ts == "serial")
             _tf = new serialManager(g);
-		else if(_ts == "single-machine")
+        else if(_ts == "single-machine")
             _tf = new shmManager(g);
-		else if(_ts == "Multi-machine")
-		    _tf = new sckManager(g);
-		else
-			throw runtime_error("please select right trafficManager style.");
-		return _tf;
-	}
-	else
-	{
-	    return _tf;
-	}
+        else if(_ts == "Multi-machine")
+            _tf = new sckManager(g);
+        else
+            throw runtime_error("please select right trafficManager style.");
+        return _tf;
+    }
+    else
+    {
+        return _tf;
+    }
 }
 
 bool trafficManager::nedCheck(string &target)

@@ -9,7 +9,7 @@ using namespace std;
 //#define _PRINT_DATA_STREAM
 //#define _SERIAL_STATISTICS
 #ifndef _SERIAL_STATISTICS
-#define _PARALLEL_STATISTICS
+    #define _PARALLEL_STATISTICS
 #endif
 typedef unsigned long long int uint_64;
 #define SVSHM_MODE 0600
@@ -26,17 +26,17 @@ class globalVar
     public:
         globalVar(string& iniFile);
         globalVar(globalVar const &) = delete;
-	globalVar(globalVar &&) = delete;
-	void operator = (globalVar const&) = delete;
+        globalVar(globalVar &&) = delete;
+        void operator = (globalVar const&) = delete;
 
-	void loadParameter(string& iniFile);
+        void loadParameter(string& iniFile);
         void printConfig();
 
         uint_64 getTotalChannelNum(){return totalChannelNum;}
-	string getNetwork(){return network;}
-	string getRunType(){return runType;}
-	string getChannelType(){ return channelType;}
-	string getClockCycle(){return clockCycle;}
+        string getNetwork(){return network;}
+        string getRunType(){return runType;}
+        string getChannelType(){ return channelType;}
+        string getClockCycle(){return clockCycle;}
         string getChannelDelay(){return channelDelay;}
         string getRoutingFunc(){return _rfName;}
         string getReadNedStyle(){return readNedStyle;}
@@ -57,7 +57,7 @@ class globalVar
         }
 
 
-	uint_64 getUniqId(string objType);
+        uint_64 getUniqId(string objType);
         uint_64 getTotalRouterNum(){return totalRouterNum;}
         size_t getProcNum(){return procNum;}
         size_t getHostNum(){return hostNum;}
@@ -89,7 +89,8 @@ class globalVar
         uint_64 getChannelsNumInPartition(int partId){return channelsNumEachPartition[partId];}
         uint_64 getCoresNumInPartition(int partId){return coresNumEachPartition[partId];}
         uint_64 getRoutersNumInPartion(int partId){return routersNumEachPartition[partId];}
- 		~globalVar();
+
+         ~globalVar();
     private:
         bool formatChk(string& target);
         void initHash();
@@ -97,9 +98,9 @@ class globalVar
         vector<uint_64> routingTable;
         string network = "loop_net";
         string runType = "serial";
-	string channelType = "normal";
-	string clockCycle = "2ns";
-	string channelDelay = "100ns";
+        string channelType = "normal";
+        string clockCycle = "2ns";
+        string channelDelay = "100ns";
         string _rfName = "flood";
         string readNedStyle = "line_by_line";
         routingFunc* _rfPtr;
@@ -108,7 +109,7 @@ class globalVar
         uint_64 totalChannelNum = 0;
         uint_64 totalCoreNum = 0;
         uint_64 totalRouterNum = 0;
-	int packetFlits = 1;
+        int packetFlits = 1;
 
         uint_64 simTimeLimit = std::numeric_limits<uint_64>::max();//ns
         void setSimTimeLimit(string&);

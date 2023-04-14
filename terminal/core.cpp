@@ -105,14 +105,14 @@ void Core::handleMessage(Flit* &f)
 #ifdef _SHORTEST_PATH_FUNC_
     assert(f->destId == coreId);
     if(f->destId != coreId)
-	{
+    {
         cerr << "f->dest = " << f->destId << endl;
         cerr << "f->src = " << f->srcId << endl;
         cerr << "coreId = " << coreId << endl;
         //throw runtime_error("The flit arrived at wrong core.");
     }
 #endif
-	killFlit(f);
+    killFlit(f);
 }
 
 void Core::killFlit(Flit* &f)

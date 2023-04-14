@@ -12,20 +12,20 @@ class sckManager: public trafficManager
         sckManager(globalVar*g):trafficManager(g){}
 
         virtual void initialize() override;
-	    virtual void buildNetwork() override;
+        virtual void buildNetwork() override;
         virtual void sendMsgToOtherProc(Flit*f) override;
         virtual void recvMsgFromOtherProc() override;
         virtual void run() override;
         virtual void finish() override;
 
         virtual ~sckManager();
-	private:
+    private:
         void recvMsgFromOtherMachine();
         void sendMsgToOtherMachine(Flit*f);
-		std::unordered_map<std::string, int> ipToSockfd;
+        std::unordered_map<std::string, int> ipToSockfd;
         std::map<int, std::vector<int>> partitionInHost;
         std::map<int, std::vector<pid_t>> procInPartition;
-		std::map<std::string, int> portNoMap;
+        std::map<std::string, int> portNoMap;
         std::vector<int> otherProcID;
         std::string hostIP;
         size_t hostNum = -1;
@@ -33,9 +33,9 @@ class sckManager: public trafficManager
         const char *gShmPath = "/tmp/gShm";
         unsigned char *gPtr = nullptr;
         int gShmID = -1;
-		int gProcID = 0;
-		int gHostID = -1;
-		unsigned long int partitionID = 0;
+        int gProcID = 0;
+        int gHostID = -1;
+        unsigned long int partitionID = 0;
         
 };
 

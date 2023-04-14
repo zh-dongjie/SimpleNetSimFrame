@@ -31,12 +31,12 @@ void destroyShmMem(globalVar *const gHandle);
 
 void usage()
 {
-	std::cerr << "[./netsim] --fast [INIFILE]       run netsim without GUI.\n\
-			      [./netsim] --quite [INIFILE]      run netsim without GUI and output.\n\
-				  [./netsim] --visual [INIFILE]     run netsim visually\n\
-				  [./netsim] --vvv [INIFILE]        run netsim visually with all details.\n\
-				  [./netsim] --help                 list this table\n\
-				  " << std::endl;
+    std::cerr << "[./netsim] --fast [INIFILE]       run netsim without GUI.\n\
+                  [./netsim] --quite [INIFILE]      run netsim without GUI and output.\n\
+                  [./netsim] --visual [INIFILE]     run netsim visually\n\
+                  [./netsim] --vvv [INIFILE]        run netsim visually with all details.\n\
+                  [./netsim] --help                 list this table\n\
+                  " << std::endl;
 }
 
 int main(int argc,char**argv)
@@ -45,16 +45,16 @@ int main(int argc,char**argv)
     unsigned char* gPtr = nullptr;
 
     if(argc != 2)
-	{
-	    usage();
-	    throw runtime_error("");
-	}
+    {
+        usage();
+        throw runtime_error("");
+    }
     string iniFile = argv[1];
     cout << "inifile:" << iniFile << endl;
 
     trafficManager *_TF;
     globalVar *gHandle = new globalVar(iniFile);
-	gHandle->printConfig();
+    gHandle->printConfig();
     gHandle->setGlobalProcId(gProcId);
     cout << "Process Manager Id Is " << gProcId << endl;            // set manager process to statistics
 

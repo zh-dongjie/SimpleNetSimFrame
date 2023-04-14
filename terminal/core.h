@@ -27,14 +27,14 @@ class Core :public base_object
         virtual void initialize() override;
         virtual void readInput() override;
         virtual void evaluate() override;
-		virtual void handleMessage(Flit* &f) override;
-		virtual void finish() override;
+        virtual void handleMessage(Flit* &f) override;
+        virtual void finish() override;
 
         void send(Flit* f,int gateId);
         void sendDirect(Flit* f, string destModule, uint_64 moduleId, string gateType, int gateId, uint_64 delay);
 
         void killFlit(Flit* &f);
-		uint_64 getCoreId() const;
+        uint_64 getCoreId() const;
         Channel *getInputChannelPtr(int inputGateId) const{return cxtInputChannel[inputGateId];}
         Channel *getOutputChannelPtr(int outputGateId) const{return cxtOutputChannel[outputGateId];}
         friend class serialManager;
@@ -43,11 +43,11 @@ class Core :public base_object
         //friend class sckManager;
 
         virtual ~Core();
-	private:
+    private:
         using timePoint = std::chrono::system_clock::time_point;
         timePoint startRealTime;
         timePoint endRealTime;
-	    uint_64 coreId = 0;
+        uint_64 coreId = 0;
         int packetFlits = 1;
         int gateNum = 1;
         void generateFlits();
@@ -56,8 +56,8 @@ class Core :public base_object
         vector<Flit*> sourceFlits;//the core itself generate flits to store in this container
         vector<Flit*> sinkFlits;
 
-		uint_64 getDestId();
-		globalVar* gHandle = nullptr;
+        uint_64 getDestId();
+        globalVar* gHandle = nullptr;
         routingFunc* _rf = nullptr;
         string _rfName = "flood";
 

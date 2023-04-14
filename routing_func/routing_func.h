@@ -31,7 +31,7 @@ class routingFunc
         unordered_map<uint_64,map<uint_64, int>> _RT;//destId --> gateId
         virtual ~routingFunc(){}
 
-	private:
+    private:
 
         static int singleFlag;
         bool _existed(vector<uint_64>&, uint_64);

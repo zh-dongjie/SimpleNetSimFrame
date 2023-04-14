@@ -27,10 +27,10 @@ class Router : public base_object
 
         virtual void initialize() override;
         virtual void handleMessage(Flit* &f) override;
-		virtual void finish() override;
-		uint_64 getRouterId() const;
+        virtual void finish() override;
+        uint_64 getRouterId() const;
         int getGatesNum() const{return gatesNum;}
-		void putFlitIntoStack(Flit* f);
+        void putFlitIntoStack(Flit* f);
         Flit* popFlitFromStack();
         void generateFlits(vector<Flit*>& srcFlit);
 
@@ -46,7 +46,7 @@ class Router : public base_object
         friend class sckManager;
         virtual ~Router();
 
-	private:
+    private:
 
         virtual void evaluate() override;
         void killFlit(Flit*);
@@ -56,13 +56,13 @@ class Router : public base_object
         bool dam = _OPEN;
         uint_64 routerId = 0;
         uint_64 totalRouters = 0;
-		int packetFlits = 1;
+        int packetFlits = 1;
 
 
         routingFunc* _rfPtr = nullptr;
         string _rfName = "flood";
 
-		vector<int> linkNodeId;
+        vector<int> linkNodeId;
         deque<Flit*> sourceFlits;//message received from outside are temporarily stored here
         globalVar* gHandle = nullptr;
 
